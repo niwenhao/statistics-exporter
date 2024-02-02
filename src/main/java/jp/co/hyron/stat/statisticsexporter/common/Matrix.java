@@ -25,6 +25,14 @@ public class Matrix {
 
     }
 
+    /**
+     * Getter for lastRow
+     *
+     * @return lastRow
+     */
+    int getLastRow() {
+        return lastRow;
+    }
 
     /**
      * Create instance of Matrix with key names in first row
@@ -58,13 +66,19 @@ public class Matrix {
      * @param values data values
      */
     public void add(String[] values) {
+        lastRow++;
+
+        if (values.length != data[0].length) {
+            throw new IllegalArgumentException("values should have the same length as keys");
+        }
+
         if (lastRow >= data.length) {
             extend();
         }
+        data[lastRow] = new String[data[0].length];
         for (int i = 0; i < values.length; i++) {
             data[lastRow][i] = values[i];
         }
-        lastRow++;
     }
 
     /**
@@ -74,19 +88,33 @@ public class Matrix {
      * @return row data
      */
     public String[] get(int row) {
-        return data[row - 1];
+
+        if (row <= lastRow) {
+            return data[row];
+        } else {
+            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
+        }
+
     }
 
     /**
      * Set value of a cell
-     * 
+     *
      * @param row   row number starting from 1
      * @param key   key name
      * @param value cell value
      */
     public void set(int row, String key, String value) {
+        if (row > lastRow) {
+            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
+        }
+
         int col = findColumn(key);
-        data[row - 1][col] = value;
+        if (col == -1) {
+            throw new IllegalArgumentException("Key " + key + " does not exist");
+        }
+
+        data[row][col] = value;
     }
 
     /**
@@ -95,10 +123,20 @@ public class Matrix {
      * @param row row number starting from 1
      * @param key key name
      * @return cell value
+     * @throws IndexOutOfBoundsException if row is out of bounds
+     * @throws IllegalArgumentException  if key does not exist
      */
     public String get(int row, String key) {
+        if (row <= 0 || row > lastRow) {
+            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
+        }
+
         int col = findColumn(key);
-        return data[row - 1][col];
+        if (col == -1) {
+            throw new IllegalArgumentException("Key " + key + " does not exist");
+        }
+
+        return data[row][col];
     }
 
     /**
@@ -109,7 +147,15 @@ public class Matrix {
      * @param value cell value
      */
     public void set(int row, int col, String value) {
-        data[row - 1][col - 1] = value;
+        if (row <= 0 || row > lastRow) {
+            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
+        }
+
+        if (col <= 0 || col > data[0].length) {
+            throw new IndexOutOfBoundsException("Column " + col + " out of bounds");
+        }
+
+        data[row][col - 1] = value;
     }
 
     /**
@@ -120,7 +166,15 @@ public class Matrix {
      * @return cell value
      */
     public String get(int row, int col) {
-        return data[row - 1][col - 1];
+        if (row <= 0 || row > lastRow) {
+            throw new IndexOutOfBoundsException("Row " + row + " out of bounds");
+        }
+
+        if (col <= 0 || col > data[0].length) {
+            throw new IndexOutOfBoundsException("Column " + col + " out of bounds");
+        }
+
+        return data[row][col - 1];
     }
 
     private int findColumn(String key) {
@@ -132,7 +186,7 @@ public class Matrix {
         return -1;
     }
 
-    private void extend() {
+    private synchronized void extend() {
         String[][] newData = new String[data.length + EXTEND_SIZE][];
         for (int i = 0; i < data.length; i++) {
             newData[i] = data[i];
