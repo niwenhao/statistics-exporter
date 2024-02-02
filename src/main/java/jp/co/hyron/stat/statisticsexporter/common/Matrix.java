@@ -19,16 +19,21 @@ public class Matrix {
     public static final int EXTEND_SIZE = 100;
 
     /**
-     * Initialize the matrix with key names in first row
-     * 
+     * Create instance of Matrix with key names in first row
+     *
      * @param keys key names
+     * @return Matrix instance
      */
-    public void initialize(String[] keys) {
-        data = new String[EXTEND_SIZE][keys.length];
+    public static Matrix createInstance(String[] keys) {
+        Matrix matrix = new Matrix();
+        matrix.data = new String[EXTEND_SIZE][keys.length];
         for (int i = 0; i < keys.length; i++) {
-            data[0][i] = keys[i];
+            matrix.data[0][i] = keys[i];
         }
+        return matrix;
     }
+
+}
 
     /**
      * Getter for data array
