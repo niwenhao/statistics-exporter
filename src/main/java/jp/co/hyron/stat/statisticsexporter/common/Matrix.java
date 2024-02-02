@@ -18,9 +18,13 @@ public class Matrix {
     protected int lastRow = 0;
     public static final int EXTEND_SIZE = 100;
 
+    /**
+     * Default constructor for Matrix
+     */
     private Matrix() {
 
     }
+
 
     /**
      * Create instance of Matrix with key names in first row
@@ -37,7 +41,6 @@ public class Matrix {
         return matrix;
     }
 
-}
 
     /**
      * Getter for data array
