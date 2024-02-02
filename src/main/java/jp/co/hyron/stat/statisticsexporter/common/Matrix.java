@@ -6,6 +6,8 @@ package jp.co.hyron.stat.statisticsexporter.common;
  * It should has a add method to add a row of data.
  * It should has a get method to remove a row of data.
  * It should has set/get method to set/get a cell of data using row and key or using row and column.
+ * When the row will be appended, it should check the index range, if the index will overflow, it should expand the array by 100 rows
  */
 public class Matrix {
+    
 }
