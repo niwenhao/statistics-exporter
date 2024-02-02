@@ -13,5 +13,12 @@ package jp.co.hyron.stat.statisticsexporter.common.prometheus;
  * It also has a register method to register the metric to micrometer.
  */
 public class Exporter {
+    /**
+     * The name, value pairs should be presented using a inner class
+     */
+    
+    /**
+     * The name, matrix key pairs should be presented using a inner class
+     */
 
 }
