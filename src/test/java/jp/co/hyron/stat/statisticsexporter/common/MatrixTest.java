@@ -15,20 +15,34 @@ class MatrixTest {
         assertArrayEquals(keys, matrix.getData()[0]);
     }
 
-    // TODO: add test method for Matrix.add() and commment it for javadoc
-    //       1. create a Matrix instance use createInstance()
-    //       2. add a row of data using add()
-    //       3. assert the data array has a new row
-    //       4. assert the data array has the same size as the key names array
-    //       5. assert the data array has the same key names as the key names array
-    //       6. assert the data array has the same data as the key names array
-    //       7. assert the lastRow is 1
+    @Test
+    void testAddRow() {
+        String[] keys = { "key1", "key2" };
 
-    // TODO: add test method for Matrix.add() and comment it for javadoc
-    //       1. create a Matrix instance use createInstance()
-    //       2. add many rows over Matrix.EXTEND_SIZE of data using add()
-    //       3. assert the data array has extended by Matrix.EXTEND_SIZE rows
-    //       4. assert second row of data array is the same as the first row of data
-    //       5. assert last row of data is correct
+        Matrix matrix = Matrix.createInstance(keys);
+
+        matrix.add(keys);
+
+        assertEquals(2, matrix.getData().length);
+        assertEquals(keys.length, matrix.getData()[0].length);
+        assertArrayEquals(keys, matrix.getData()[0]);
+        assertEquals(1, matrix.getLastRow());
+    }
+
+    @Test
+    void testAddRowExtend() {
+        String[] keys = { "key1", "key2" };
+
+        Matrix matrix = Matrix.createInstance(keys);
+
+        for (int i = 0; i < Matrix.EXTEND_SIZE + 1; i++) {
+            matrix.add(keys);
+        }
+
+        assertEquals(Matrix.EXTEND_SIZE + 1, matrix.getData().length);
+        assertArrayEquals(keys, matrix.getData()[1]);
+        assertEquals(Matrix.EXTEND_SIZE, matrix.getLastRow());
+        assertArrayEquals(keys, matrix.getData()[Matrix.EXTEND_SIZE]);
+    }
 
 }
