@@ -15,7 +15,7 @@ class MatrixTest {
         assertArrayEquals(keys, matrix.getData()[0]);
     }
 
-    // TODO: add test method for Matrix.add()
+    // TODO: add test method for Matrix.add() and commment it for javadoc
     //       1. create a Matrix instance use createInstance()
     //       2. add a row of data using add()
     //       3. assert the data array has a new row
@@ -24,11 +24,11 @@ class MatrixTest {
     //       6. assert the data array has the same data as the key names array
     //       7. assert the lastRow is 1
 
-    // TODO: add test method for Matrix.add()
+    // TODO: add test method for Matrix.add() and comment it for javadoc
     //       1. create a Matrix instance use createInstance()
-    //       2. add many rows over EXTEND_SIZE of data using add()
-    //       3. assert the data array has extended by EXTEND_SIZE rows
+    //       2. add many rows over Matrix.EXTEND_SIZE of data using add()
+    //       3. assert the data array has extended by Matrix.EXTEND_SIZE rows
     //       4. assert second row of data array is the same as the first row of data
-    //       5. assert last row is correct.
+    //       5. assert last row of data is correct
 
 }
