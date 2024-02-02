@@ -3,6 +3,7 @@ package jp.co.hyron.stat.statisticsexporter.common.prometheus;
 import io.micrometer.core.instrument.MeterRegistry;
 import jp.co.hyron.stat.statisticsexporter.common.Matrix;
 import jp.co.hyron.stat.statisticsexporter.common.Extractor;
+import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Prometheus Exporter
  * 
@@ -17,6 +18,9 @@ import jp.co.hyron.stat.statisticsexporter.common.Extractor;
  */
 public abstract class Exporter {
     private Extractor extractor;
+    
+    @Autowired
+    private MeterRegistry meterRegistry;
 
     public Extractor getExtractor() {
         return extractor;
@@ -58,5 +62,5 @@ public abstract class Exporter {
 
     public abstract void updateMetric();
 
-    public abstract void exportMetric(MeterRegistry meterRegistry);
+    public abstract void exportMetric();
 }
