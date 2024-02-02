@@ -1,5 +1,8 @@
 package jp.co.hyron.stat.statisticsexporter.common.prometheus;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import jp.co.hyron.stat.statisticsexporter.common.Matrix;
+import jp.co.hyron.stat.statisticsexporter.common.Extractor;
 /**
  * Prometheus Exporter
  * 
@@ -12,73 +15,48 @@ package jp.co.hyron.stat.statisticsexporter.common.prometheus;
  * 
  * It also has a register method to register the metric to micrometer.
  */
-public class Exporter {
-    /**
-     * The name, value pairs should be presented using a inner class
-     */
-    class LabelNameValue {
-        private String name;
-        private String value;
+public abstract class Exporter {
+    private Extractor extractor;
 
-        public LabelNameValue(String name, String value) {
-          this.name = name;
-          this.value = value;  
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-    }
-    
-    /**
-     * The name, matrix key pairs should be presented using a inner class
-     */
-    class LabelNameKey {
-        private String name;
-        private String key;
-
-        public LabelNameKey(String name, String key) {
-            this.name = name;
-            this.key = key;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
+    public Extractor getExtractor() {
+        return extractor;
     }
 
-    /**
-     * Add a Extractor reference to get Matrix data.
-     * Add attributes to keep the LabelNameValue array as attribute to present the predefined metric labels to Prometheus.
-     * Add attributes to keep the LabelNameKey array as attribute, take the label value form Matrix using the key to present the variable 
-     *   metric labels to Prometheus.
-     * Add attribute metricValueKey to get the metric value from the matrix.
-     * 
-     * Add a register method to register the metric to micrometer.
-     */
+    public void setExtractor(Extractor extractor) {
+        this.extractor = extractor;
+    }
 
+    private String[] labelNameValues;
+
+    public String[] getLabelNameValues() {
+        return labelNameValues;
+    }
+
+    public void setLabelNameValues(String[] labelNameValues) {
+        this.labelNameValues = labelNameValues;
+    }
+
+    private String[] labelNameKeys;
+
+    public String[] getLabelNameKeys() {
+        return labelNameKeys;
+    }
+
+    public void setLabelNameKeys(String[] labelNameKeys) {
+        this.labelNameKeys = labelNameKeys;
+    }
+
+    private String metricValueKey;
+
+    public String getMetricValueKey() {
+        return metricValueKey;
+    }
+
+    public void setMetricValueKey(String metricValueKey) {
+        this.metricValueKey = metricValueKey;
+    }
+
+    public abstract void updateMetric();
+
+    public abstract void exportMetric(MeterRegistry meterRegistry);
 }
