@@ -5,8 +5,8 @@ package jp.co.hyron.stat.statisticsexporter.common.prometheus;
  * 
  * This class should register a metric to micrometer.
  * It has a Extractor reference to get Matrix data.
- * It keeps the name, label name and value pairs in his attributes to present the predefined metric labels to Prometheus.
- * It also keeps the label name and key pairs, take the label value form Matrix using the key to present the variable 
+ * It keeps the LabelNameValue array as attribute to present the predefined metric labels to Prometheus.
+ * It also keeps the LabelNameKey array as attribute, take the label value form Matrix using the key to present the variable 
  *   metric labels to Prometheus.
  * It also has a metricValueKey to get the metric value from the matrix.
  * 
@@ -16,9 +16,60 @@ public class Exporter {
     /**
      * The name, value pairs should be presented using a inner class
      */
+    class LabelNameValue {
+        private String name;
+        private String value;
+
+        public LabelNameValue(String name, String value) {
+          this.name = name;
+          this.value = value;  
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
     
     /**
      * The name, matrix key pairs should be presented using a inner class
      */
+    class LabelNameKey {
+        private String name;
+        private String key;
+
+        public LabelNameKey(String name, String key) {
+            this.name = name;
+            this.key = key;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+    }
+
 
 }
