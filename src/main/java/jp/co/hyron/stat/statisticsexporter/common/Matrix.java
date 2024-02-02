@@ -31,6 +31,16 @@ public class Matrix {
     }
 
     /**
+     * Getter for data array
+     * 
+     * @return data array
+     */
+    String[][] getData() {
+        return data;
+    }
+    
+    
+    /**
      * Add a row of data
      * 
      * @param values data values
