@@ -71,5 +71,14 @@ public class Exporter {
         }
     }
 
+    /**
+     * Add a Extractor reference to get Matrix data.
+     * Add attributes to keep the LabelNameValue array as attribute to present the predefined metric labels to Prometheus.
+     * Add attributes to keep the LabelNameKey array as attribute, take the label value form Matrix using the key to present the variable 
+     *   metric labels to Prometheus.
+     * Add attribute metricValueKey to get the metric value from the matrix.
+     * 
+     * Add a register method to register the metric to micrometer.
+     */
 
 }
