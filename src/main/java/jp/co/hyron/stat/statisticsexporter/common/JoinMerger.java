@@ -21,7 +21,10 @@ public class JoinMerger extends Merger {
 
     @Override
     public Matrix extract() {
-        
+        // Sort the extracts by joinKeys using Matrix.createSorted()
+
+        // Scan the matrixes 
+
     }
 
 }

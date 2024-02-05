@@ -1,5 +1,8 @@
 package jp.co.hyron.stat.statisticsexporter.common;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 /**
  * A class to contain data to transfer between components
  * It has a two dimensional array of Strings. The first row is the key names for
@@ -25,10 +28,30 @@ public class Matrix {
 
     }
 
-    public Matrix createSorted(String keys) {
-        //Create a new Matrix and copy data from this.
-        //Sort the rows using argument keys.
-        //return the new Matrix
+    public Matrix createSorted(String[] keys) {
+        Matrix matrix = new Matrix();
+        matrix.data = Arrays.copyOf(this.data, this.data.length);
+        matrix.lastRow = this.lastRow;
+
+        Arrays.sort(matrix.data, 1, matrix.getLastRow(),
+                new Comparator<String[]>() {
+                    @Override
+                    public int compare(String[] row1, String[] row2) {
+                        for (String key: keys) {
+                            int idx = matrix.findColumn(key);
+                            if (idx == -1) {
+                                throw new IllegalArgumentException("key is not found: key=" + key);
+                            }
+                            int result = row1[idx].compareTo(row2[idx]);
+                            if (result != 0) {
+                                return result;
+                            }
+                        }
+                        return 0;
+                    }
+                });
+
+        return matrix;
     }
 
     /**
