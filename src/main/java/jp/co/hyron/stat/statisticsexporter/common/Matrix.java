@@ -25,6 +25,12 @@ public class Matrix {
 
     }
 
+    public Matrix createSorted(String keys) {
+        //Create a new Matrix and copy data from this.
+        //Sort the rows using argument keys.
+        //return the new Matrix
+    }
+
     /**
      * Getter for lastRow
      *
