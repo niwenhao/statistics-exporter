@@ -1,30 +1,51 @@
 package jp.co.hyron.stat.statisticsexporter.common;
 
-/**
- * A class extends the Merger class and implements the extract method to get the
- * merged Matrix.
- * It join the Matrix from extracts using joinKeys and return it through extract method
- */
-public class JoinMerger extends Merger {
-    /**
-     * The keys to join the Matrix from extracts
-     */
-    String[] joinKeys;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
-    public void setJoinKeys(String[] joinKeys) {
-        this.joinKeys = joinKeys;
-    }
+public class JoinMerger extends Merger {
+    private String[] joinKeys;
 
     public String[] getJoinKeys() {
         return joinKeys;
     }
 
-    @Override
-    public Matrix extract() {
-        // Sort the extracts by joinKeys using Matrix.createSorted()
-
-        // Scan the matrixes 
-
+    public void setJoinKeys(String[] joinKeys) {
+        this.joinKeys = joinKeys;
     }
+
+    public Matrix extract() {
+        Matrix[] matrixes = Arrays.stream(this.getExtractors())
+                .map(extractor -> extractor.extract()).map(matrix -> matrix.createSorted(joinKeys)).toArray(Matrix []::new);
+
+        String[][] matrixesKeys = new String[matrixes.length][];
+
+        for (int i = 0; i < matrixes.length; i++) {
+            matrixesKeys[i] = Arrays.stream(matrixes[i].getKeyNames()).filter(key ->!Arrays.asList(joinKeys).contains(key)).toArray(String[]::new);
+        }
+
+        String[] dataKeyNames = Arrays.stream(matrixesKeys).reduce(null, (a, b) -> {
+            if (a == null) {
+                return b;
+            }
+            if (b == null) {
+                return a;
+            }
+            return Stream.of(a, b).flatMap(Arrays::stream).toArray(String[]::new);
+        });
+
+        var joinedMatrix = Matrix.createInstance(Stream.concat(Arrays.stream(joinKeys), Arrays.stream(dataKeyNames)).toArray(String[]::new));
+
+        var baseMatrix = matrixes[0];
+
+        for (int i = 1; i < baseMatrix.getLastRow(); i++) {
+            // TODO: baseMatrixのi行目の
+        }
+
+
+        // TODO: コンパイルエラーを押されるための一時的なコード、後で修正する
+        return null;
+    }
+
 
 }

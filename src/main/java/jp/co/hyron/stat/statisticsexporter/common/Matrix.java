@@ -17,6 +17,81 @@ import java.util.Comparator;
  * using row and column.
  */
 public class Matrix {
+
+    /**
+     * このクラスは検索条件のキーと値を保持するクラスです。複数条件の場合、配列で保持します。
+     */
+    public static class SearchKeyValue {
+        /**
+         * 検索条件のキー
+         */
+        private String key;
+        /**
+         * 検索条件の値
+         */
+        private String value;
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
+    /**
+     * 検索結果のクラスです。
+     * 複数行がマッチした場合、配列で返します。
+     */
+    public static class SearchResult {
+        /**
+         * マッチする行番
+         */
+        private int row;
+        /**
+         * マッチしたキーの配列
+         */
+        private String[] keys;
+        /**
+         * マッチした値の配列
+         */
+        private String[] values;
+
+        public int getRow() {
+            return row;
+        }
+
+        public void setRow(int row) {
+            this.row = row;
+        }
+
+        public String[] getKeys() {
+            return keys;
+        }
+
+        public void setKeys(String[] keys) {
+            this.keys = keys;
+        }
+
+        public String[] getValues() {
+            return values;
+        }
+
+        public void setValues(String[] values) {
+            this.values = values;
+        }
+
+    }
+
     protected String[][] data;
     protected int lastRow = 0;
     public static final int EXTEND_SIZE = 100;
@@ -55,6 +130,12 @@ public class Matrix {
     }
 
     /**
+     * SearchKeyValueの配列を使って、行を検索する、検索結果をSearchResultの配列に格納して返す
+     */
+    public SearchResult[] search(SearchKeyValue[] searchKeyValues) {
+    }
+
+    /**
      * Getter for lastRow
      *
      * @return lastRow
@@ -80,6 +161,17 @@ public class Matrix {
 
 
     /**
+     * Get the key names from the first row
+     *
+     * @return key names
+     */
+    public String[] getKeyNames() {
+        return data[0];
+    }
+
+
+
+    /**
      * Getter for data array
      * 
      * @return data array
@@ -88,6 +180,9 @@ public class Matrix {
         return data;
     }
     
+    public void add() {
+        this.add(new String[getKeyNames().length]);
+    }
     
     /**
      * Add a row of data
