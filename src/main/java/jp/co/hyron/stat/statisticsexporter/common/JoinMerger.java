@@ -39,7 +39,7 @@ public class JoinMerger extends Merger {
         var baseMatrix = matrixes[0];
 
         for (int i = 1; i < baseMatrix.getLastRow(); i++) {
-            // TODO: baseMatrixのi行目の
+            // TODO: baseMatrixのi.collect(Collectors.toL)
         }
 
 
