@@ -21,6 +21,7 @@ public class Matrix {
 
     protected int lastRow = 0;
     public static final int EXTEND_SIZE = 100;
+    protected String[][] data;
 
     /**
      * Default constructor for Matrix
@@ -53,12 +54,6 @@ public class Matrix {
                 });
 
         return matrix;
-    }
-
-    /**
-     * SearchKeyValueの配列を使って、行を検索する、検索結果をSearchResultの配列に格納して返す
-     */
-    public SearchResult[] search(SearchKeyValue[] searchKeyValues) {
     }
 
     /**
@@ -224,7 +219,7 @@ public class Matrix {
         return data[row][col - 1];
     }
 
-    private int findColumn(String key) {
+    public int findColumn(String key) {
         for (int i = 0; i < data[0].length; i++) {
             if (data[0][i].equals(key)) {
                 return i;

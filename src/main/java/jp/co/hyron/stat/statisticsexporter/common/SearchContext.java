@@ -1,12 +1,18 @@
 package jp.co.hyron.stat.statisticsexporter.common;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.List;
 /**
  * Joinを効率化するため、以下の機能を実現する。
  * Joinキーと列番号を管理する。
  * データ抽出のキーと列番号を管理する。
  * キーのハッシュ値と行番の対応を管理する。
  */
-public static class SearchContext {
+public class SearchContext {
     /**
      * 検索キーの配列
      */
@@ -62,16 +68,24 @@ public static class SearchContext {
      */
     public static SearchContext createSearchContext(String[] searchKeys, Matrix matrix) {
         SearchContext searchContext = new SearchContext();
-        searchContext.setSearchKeys(searchKeys);
+        searchContext.searchKeys = searchKeys;
 
         searchContext.matrix = matrix;
 
         // ここでキーの列番号を計算する。
-        searchContext.searchKeyColumns = Arrays.stream(searchKeys).map(searchKey -> matrix.findColumn(searchKey))
-                .toArray(Integer[]::new);
+        ArrayList keys = new ArrayList();
 
-        searchContext.extractKeys = Arrays.stream(searchKeys)
-                .filter(searchKey -> !Arrays.asList(searchKeys).contains(search)).toArray(String[]::new);
+        for (String key : searchKeys) {
+            int column = matrix.findColumn(key);
+            if (column == -1) {
+                throw new IllegalArgumentException("key is not found: key=" + key);
+            }
+        }
+        searchContext.searchKeyColumns = Arrays.stream(searchKeys).map(searchKey -> matrix.findColumn(searchKey))
+                .toArray(n -> new int[n]);
+
+        searchContext.extractKeys = Arrays.stream(matrix.getKeyNames())
+                .filter(key -> !Arrays.asList(searchKeys).contains(key)).toArray(String[]::new);
         searchContext.extractKeyColumns = Arrays.stream(searchContext.extractKeys)
                 .map(extractKey -> matrix.findColumn(extractKey))
                 .toArray(Integer[]::new);
@@ -127,4 +141,3 @@ public static class SearchContext {
     }
 }
 
-protected String[][] data;
