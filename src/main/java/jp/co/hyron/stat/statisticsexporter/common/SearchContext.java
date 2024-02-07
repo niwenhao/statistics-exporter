@@ -60,6 +60,13 @@ public class SearchContext {
 
     private Matrix matrix;
 
+    private int findColumn(String key) {
+        var col = this.matrix.findColumn(key);
+        if (col == -1) {
+            throw new IllegalArgumentException("key is not found: key=" + key);
+        }
+        return col;
+    }
     /**
      * 検索キーの配列とデータ(Matrix)を設定して、検索コンテキストを生成します。
      * 
@@ -73,29 +80,21 @@ public class SearchContext {
         searchContext.matrix = matrix;
 
         // ここでキーの列番号を計算する。
-        ArrayList keys = new ArrayList();
-
-        for (String key : searchKeys) {
-            int column = matrix.findColumn(key);
-            if (column == -1) {
-                throw new IllegalArgumentException("key is not found: key=" + key);
-            }
-        }
-        searchContext.searchKeyColumns = Arrays.stream(searchKeys).map(searchKey -> matrix.findColumn(searchKey))
-                .toArray(n -> new int[n]);
+        searchContext.searchKeyColumns = Arrays.stream(searchKeys)
+            .map(searchContext::findColumn).mapToInt(Integer::intValue).toArray();
 
         searchContext.extractKeys = Arrays.stream(matrix.getKeyNames())
                 .filter(key -> !Arrays.asList(searchKeys).contains(key)).toArray(String[]::new);
         searchContext.extractKeyColumns = Arrays.stream(searchContext.extractKeys)
-                .map(extractKey -> matrix.findColumn(extractKey))
-                .toArray(Integer[]::new);
+                .map(searchContext::findColumn).mapToInt(Integer::intValue).toArray();
 
         // ここでキーと行番号の対応を管理するHashMapを生成する。
         searchContext.keyToRowsMap = new HashMap<>();
+        String[][] data = matrix.getData();
         for (int i = 1; i < matrix.getLastRow(); i++) {
+            final int idx = i;
             // searchKeyColumnsでキー値を取得する。すべてのキー値を":"で連結して、keyToRowsMapに追加する。
-            var key = Arrays.stream(searchContext.searchKeyColumns)
-                    .map(searchKeyColumn -> matrix.get(i, searchKeyColumn))
+            var key = Arrays.stream(searchContext.searchKeyColumns).boxed().map(col -> data[idx][col])
                     .collect(Collectors.joining(":"));
             if (searchContext.keyToRowsMap.containsKey(key)) {
                 int[] rows = searchContext.keyToRowsMap.get(key);
@@ -106,6 +105,8 @@ public class SearchContext {
                 searchContext.keyToRowsMap.put(key, new int[] { i });
             }
         }
+
+        return searchContext;
     }
 
     /**
