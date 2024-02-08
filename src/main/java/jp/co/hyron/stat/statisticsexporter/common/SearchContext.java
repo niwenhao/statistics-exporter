@@ -91,7 +91,7 @@ public class SearchContext {
         // ここでキーと行番号の対応を管理するHashMapを生成する。
         searchContext.keyToRowsMap = new HashMap<>();
         String[][] data = matrix.getData();
-        for (int i = 1; i < matrix.getLastRow(); i++) {
+        for (int i = 1; i <= matrix.getLastRow(); i++) {
             final int idx = i;
             // searchKeyColumnsでキー値を取得する。すべてのキー値を":"で連結して、keyToRowsMapに追加する。
             var key = Arrays.stream(searchContext.searchKeyColumns).boxed().map(col -> data[idx][col])
